@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Acceder · Panel NCG</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/admin/styles.css">
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="../assets/admin/supabase-config.js"></script>
+<script src="../assets/admin/supabase-client.js"></script>
+<script src="../assets/admin/auth-guard.js"></script>
+</head>
+<body>
+
+<div class="login-shell">
+  <form class="login-card" id="loginForm" novalidate>
+    <div class="login-brand">
+      <span class="logo"><img src="../assets/logo-ncg.png" alt=""></span>
+      <span class="lt"><b>Constructora NCG</b><span>Panel privado</span></span>
+    </div>
+
+    <h1>Bienvenido</h1>
+    <p class="lead">Accede con tu cuenta de administrador para gestionar la web.</p>
+
+    <div class="field">
+      <label for="loginEmail">Correo electrónico <span class="req">*</span></label>
+      <input type="email" id="loginEmail" name="email" placeholder="tu@correo.com" autocomplete="username" required>
+      <span class="err">Introduce un correo válido.</span>
+    </div>
+
+    <div class="field" style="margin-top:14px">
+      <label for="loginPass">Contraseña <span class="req">*</span></label>
+      <input type="password" id="loginPass" name="password" placeholder="••••••••" autocomplete="current-password" required>
+      <span class="err">La contraseña no puede estar vacía.</span>
+    </div>
+
+    <div class="login-msg" id="loginMsg"></div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 012 2v14a2 2 0 01-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        Acceder
+      </button>
+    </div>
+
+    <p class="login-foot">
+      <a href="../index.html">← Volver a la web pública</a>
+    </p>
+  </form>
+</div>
+
+<script src="../assets/admin/shell.js"></script>
+<script>
+(function(){
+  var form = document.getElementById('loginForm');
+  var msg  = document.getElementById('loginMsg');
+  var emailEl = document.getElementById('loginEmail');
+  var passEl  = document.getElementById('loginPass');
+
+  function setMsg(text, kind){
+    msg.textContent = text || '';
+    msg.classList.remove('ok','show');
+    if (!text) return;
+    if (kind === 'ok') msg.classList.add('ok');
+    msg.classList.add('show');
+  }
+  function fieldErr(el, on){
+    var f = el.closest('.field'); if (!f) return;
+    f.classList.toggle('has-error', !!on);
+  }
+  [emailEl, passEl].forEach(function(el){
+    el.addEventListener('input', function(){ fieldErr(el, false); setMsg(''); });
+  });
+
+  form.addEventListener('submit', function(ev){
+    ev.preventDefault();
+    var em = emailEl.value.trim();
+    var pw = passEl.value;
+    var ok = true;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(em)){ fieldErr(emailEl, true); ok = false; }
+    if (!pw){ fieldErr(passEl, true); ok = false; }
+    if (!ok) return;
+
+    if (!window.NCG_IS_CONFIGURED || !window.NCG_IS_CONFIGURED()){
+      setMsg('Supabase aún no está conectado. Termina los pasos de supabase/INSTRUCCIONES.md para activar el acceso.', 'err');
+      return;
+    }
+    if (!window.ncgSb){
+      setMsg('No se pudo cargar el cliente Supabase. Revisa la conexión.', 'err');
+      return;
+    }
+    setMsg('Verificando…', 'ok');
+    window.ncgSb.auth.signInWithPassword({ email: em, password: pw })
+      .then(function(res){
+        if (res.error) { setMsg(res.error.message || 'No se pudo iniciar sesión.', 'err'); return; }
+        setMsg('¡Listo! Entrando…', 'ok');
+        setTimeout(function(){ location.href = 'index.html'; }, 400);
+      })
+      .catch(function(err){
+        setMsg((err && err.message) || 'Error de red.', 'err');
+      });
+  });
+})();
+</script>
+</body>
+</html>

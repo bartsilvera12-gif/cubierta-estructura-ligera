@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard · Panel NCG</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/admin/styles.css">
+<script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+<script src="../assets/admin/supabase-config.js"></script>
+<script src="../assets/admin/supabase-client.js"></script>
+<script src="../assets/admin/auth-guard.js"></script>
+</head>
+<body>
+
+<div class="admin">
+
+  <aside class="sidebar">
+    <div class="sb-brand">
+      <span class="logo"><img src="../assets/logo-ncg.png" alt=""></span>
+      <span class="who"><b>Constructora NCG</b><span>Panel admin</span></span>
+    </div>
+    <nav class="sb-nav">
+      <span class="sb-section">Principal</span>
+      <a href="index.html" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
+        Dashboard
+      </a>
+      <span class="sb-section">Contenido</span>
+      <a href="servicios.html" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+        Servicios
+      </a>
+      <a href="trabajos.html" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v3H4z"/><path d="M4 11h16v9H4z"/><path d="M9 3h6v3H9z"/></svg>
+        Trabajos
+      </a>
+      <a href="galeria.html" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        Galería
+      </a>
+      <span class="sb-section">Comunicación</span>
+      <a href="mensajes.html" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        Mensajes
+      </a>
+      <span class="sb-section">Sistema</span>
+      <a href="configuracion.html" class="sb-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 008 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H2a2 2 0 010-4h.09A1.65 1.65 0 004.6 8a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V2a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H22a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Configuración
+      </a>
+    </nav>
+    <div class="sb-foot">
+      <a href="../index.html" class="sb-link" style="background:transparent;color:var(--text-mute)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Ver web pública
+      </a>
+      <button class="logout" data-logout>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Cerrar sesión
+      </button>
+    </div>
+  </aside>
+
+  <header class="header">
+    <button class="hd-toggle" aria-label="Abrir menú">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <span class="hd-title">Dashboard</span>
+    <span class="hd-spacer"></span>
+    <div class="hd-user">
+      <span class="avatar" id="hdAvatar">NC</span>
+      <span class="info"><b id="hdEmail">admin@ncg</b><span>Administrador</span></span>
+    </div>
+  </header>
+
+  <main class="main">
+    <div class="main-inner">
+
+      <div class="page-head">
+        <div class="ph-text">
+          <h1>Resumen general</h1>
+          <p>Vista rápida del contenido y la actividad reciente de la web de Constructora NCG.</p>
+        </div>
+        <div class="ph-actions">
+          <a href="trabajos.html" class="btn ghost">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nuevo trabajo
+          </a>
+          <a href="servicios.html" class="btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            Nuevo servicio
+          </a>
+        </div>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></span>
+          <div class="num" data-stat="servicios">0</div>
+          <div class="lab">Servicios</div>
+          <div class="delta" id="dServicios">— activos</div>
+        </div>
+        <div class="stat">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v3H4z"/><path d="M4 11h16v9H4z"/></svg></span>
+          <div class="num" data-stat="trabajos">0</div>
+          <div class="lab">Trabajos</div>
+          <div class="delta" id="dTrabajos">— destacados</div>
+        </div>
+        <div class="stat">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg></span>
+          <div class="num" data-stat="galeria">0</div>
+          <div class="lab">Imágenes galería</div>
+          <div class="delta" id="dGaleria">— activas</div>
+        </div>
+        <div class="stat">
+          <span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></span>
+          <div class="num" data-stat="mensajes">0</div>
+          <div class="lab">Mensajes</div>
+          <div class="delta" id="dMensajes">— nuevos sin leer</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1.4fr 1fr;gap:16px;align-items:stretch">
+
+        <section class="card elev">
+          <div class="card-head">
+            <h3>Últimos mensajes</h3>
+            <a href="mensajes.html" class="btn subtle sm">Ver todos →</a>
+          </div>
+          <div class="empty" id="emptyMensajes">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg></div>
+            <h3>Sin mensajes todavía</h3>
+            <p>Aquí aparecerán las solicitudes de presupuesto enviadas desde el formulario de la web pública.</p>
+          </div>
+        </section>
+
+        <section class="card elev">
+          <div class="card-head">
+            <h3>Últimos trabajos</h3>
+            <a href="trabajos.html" class="btn subtle sm">Ver todos →</a>
+          </div>
+          <div class="empty" id="emptyTrabajos">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16v3H4z"/><path d="M4 11h16v9H4z"/></svg></div>
+            <h3>Sin trabajos publicados</h3>
+            <p>Crea tu primer trabajo para que aparezca en la sección de Trabajos de la web.</p>
+            <a href="trabajos.html" class="btn sm">Crear trabajo</a>
+          </div>
+        </section>
+
+      </div>
+
+      <section class="card elev" style="margin-top:16px">
+        <div class="card-head">
+          <h3>Accesos rápidos</h3>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+          <a href="servicios.html" class="card" style="padding:14px 16px;display:flex;gap:12px;align-items:center;border-color:var(--line);text-decoration:none">
+            <span style="width:36px;height:36px;border-radius:9px;background:rgba(46,125,246,.14);color:var(--blue-bright);display:flex;align-items:center;justify-content:center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>
+            </span>
+            <span><b style="display:block;color:var(--text);font-family:'Archivo',sans-serif">Editar servicios</b><span class="muted">12 catalogados</span></span>
+          </a>
+          <a href="galeria.html" class="card" style="padding:14px 16px;display:flex;gap:12px;align-items:center;border-color:var(--line);text-decoration:none">
+            <span style="width:36px;height:36px;border-radius:9px;background:rgba(46,125,246,.14);color:var(--blue-bright);display:flex;align-items:center;justify-content:center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+            </span>
+            <span><b style="display:block;color:var(--text);font-family:'Archivo',sans-serif">Subir a galería</b><span class="muted">Categorizar fotos</span></span>
+          </a>
+          <a href="mensajes.html" class="card" style="padding:14px 16px;display:flex;gap:12px;align-items:center;border-color:var(--line);text-decoration:none">
+            <span style="width:36px;height:36px;border-radius:9px;background:rgba(46,125,246,.14);color:var(--blue-bright);display:flex;align-items:center;justify-content:center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+            </span>
+            <span><b style="display:block;color:var(--text);font-family:'Archivo',sans-serif">Revisar mensajes</b><span class="muted">Contactar clientes</span></span>
+          </a>
+          <a href="configuracion.html" class="card" style="padding:14px 16px;display:flex;gap:12px;align-items:center;border-color:var(--line);text-decoration:none">
+            <span style="width:36px;height:36px;border-radius:9px;background:rgba(46,125,246,.14);color:var(--blue-bright);display:flex;align-items:center;justify-content:center">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 10v6M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m10 0h6M4.22 19.78l4.24-4.24m7.08-7.08l4.24-4.24"/></svg>
+            </span>
+            <span><b style="display:block;color:var(--text);font-family:'Archivo',sans-serif">Datos de la empresa</b><span class="muted">Teléfono, redes, logo</span></span>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+</div>
+
+<script src="../assets/admin/shell.js"></script>
+<script src="../assets/admin/profile.js"></script>
+<script src="../assets/admin/dashboard.js"></script>
+</body>
+</html>

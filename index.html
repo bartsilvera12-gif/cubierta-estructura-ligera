@@ -30,6 +30,9 @@
       <a href="#contacto">Contacto</a>
     </nav>
     <div class="header-cta">
+      <button class="search-toggle" id="searchBtn" type="button" aria-label="Buscar en la web">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      </button>
       <a href="#contacto" class="btn btn-ghost">Presupuesto</a>
     </div>
     <button class="menu-toggle" aria-label="Menú"><span></span><span></span><span></span></button>
@@ -410,6 +413,23 @@
     </div>
   </div>
 </footer>
+
+<!-- ============ OVERLAY DE BÚSQUEDA ============ -->
+<div class="search-overlay" id="searchOverlay" hidden role="dialog" aria-modal="true" aria-label="Buscar en la web">
+  <div class="search-backdrop" data-close></div>
+  <div class="search-card">
+    <div class="search-input-row">
+      <svg class="search-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="search" id="searchInput" placeholder="Buscar servicios, secciones, contacto…" autocomplete="off" spellcheck="false">
+      <button class="search-close" id="searchClose" type="button" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6l-12 12"/></svg>
+      </button>
+    </div>
+    <ul class="search-results" id="searchResults" role="listbox"></ul>
+    <p class="search-empty" id="searchEmpty" hidden>Sin resultados. Prueba con otra palabra.</p>
+    <p class="search-hint" id="searchHint">Empieza a escribir. Usa <kbd>↑</kbd> <kbd>↓</kbd> para navegar y <kbd>Enter</kbd> para ir.</p>
+  </div>
+</div>
 
 <!-- ============ WHATSAPP FLOTANTE ============ -->
 <a href="https://wa.me/34638769281?text=Hola%20NCG,%20quiero%20solicitar%20un%20presupuesto" target="_blank" class="wa-float" aria-label="WhatsApp">
