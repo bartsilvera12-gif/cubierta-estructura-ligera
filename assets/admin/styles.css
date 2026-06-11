@@ -116,8 +116,11 @@ small,.muted{color:var(--text-mute);font-size:.84rem}
    SIDEBAR
    ============================================================ */
 .sidebar{
-  background:linear-gradient(180deg,var(--blue) 0%, var(--blue-deep) 100%);
-  border-right:1px solid rgba(255,255,255,.08);
+  background:
+    radial-gradient(600px 400px at 50% -10%,rgba(46,125,246,.22),transparent 70%),
+    radial-gradient(500px 600px at 50% 110%,rgba(46,125,246,.10),transparent 70%),
+    linear-gradient(180deg,#0a1020 0%,#10141c 50%,#0a1020 100%);
+  border-right:1px solid rgba(255,255,255,.06);
   padding:22px 16px 18px;
   display:flex;flex-direction:column;gap:18px;
   position:sticky;top:0;height:100vh;
@@ -145,20 +148,24 @@ small,.muted{color:var(--text-mute);font-size:.84rem}
   background:rgba(255,255,255,.10);color:#fff;border-color:rgba(255,255,255,.35);
 }
 .sb-brand{
-  display:flex;flex-direction:column;align-items:stretch;gap:10px;
-  padding:4px 6px 16px;
+  display:flex;flex-direction:column;align-items:stretch;gap:8px;
+  padding:2px 12px 14px;
   border-bottom:1px solid var(--line);
 }
 .sb-brand .logo{
-  width:100%;height:auto;border-radius:12px;overflow:hidden;
+  width:75%;margin:0 auto;height:auto;border-radius:10px;overflow:hidden;
   background:#fff;display:flex;align-items:center;justify-content:center;
-  box-shadow:0 0 0 1px rgba(255,255,255,.18), 0 8px 24px rgba(0,0,0,.18);
-  padding:12px 14px;
+  box-shadow:0 0 0 1px rgba(255,255,255,.18), 0 6px 18px rgba(0,0,0,.18);
+  padding:0;
+  transition:width .35s var(--ease),box-shadow .35s var(--ease);
 }
-.sb-brand .logo{padding:0}
-.sb-brand .logo img{
-  width:100%;height:auto;display:block;
+.sb-brand .logo img{width:100%;height:auto;display:block}
+.sidebar.is-scrolled .sb-brand .logo{
+  width:48%;
+  box-shadow:0 0 0 1px rgba(255,255,255,.18), 0 3px 10px rgba(0,0,0,.18);
 }
+.sidebar.is-scrolled .sb-brand{padding-bottom:10px;gap:6px}
+.sidebar.is-scrolled .sb-brand .panel-tag{font-size:.62rem}
 .sb-brand .who{display:none}
 .sb-brand .panel-tag{
   text-align:center;font:700 .68rem/1 "Archivo",sans-serif;

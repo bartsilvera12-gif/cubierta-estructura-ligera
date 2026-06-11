@@ -13,6 +13,17 @@
     });
   });
 
+  /* ---- Sidebar: achicar logo al scrollear ---- */
+  document.addEventListener('DOMContentLoaded', function(){
+    var sb = document.querySelector('.sidebar');
+    if (!sb) return;
+    var onScroll = function(){
+      sb.classList.toggle('is-scrolled', window.scrollY > 40);
+    };
+    window.addEventListener('scroll', onScroll, { passive:true });
+    onScroll();
+  });
+
   /* ---- Sidebar móvil ---- */
   document.addEventListener('DOMContentLoaded', function(){
     var toggle = document.querySelector('.hd-toggle');
