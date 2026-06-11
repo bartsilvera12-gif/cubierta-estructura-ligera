@@ -280,3 +280,144 @@
   }
 
 })();
+
+/* ============================================================
+   GALERÍA OVERLAY
+   ============================================================ */
+(() => {
+  const goTop = document.getElementById('goTop');
+  if (goTop) goTop.addEventListener('click', (e) => {
+    e.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  const openBtn = document.getElementById('openGallery');
+  const overlay = document.getElementById('galleryOverlay');
+  const closeBtn = document.getElementById('closeGallery');
+  const grid = document.getElementById('govGrid');
+  if (!openBtn || !overlay || !grid) return;
+
+  const TOTAL = 28;
+  const imgUrl = (i) => `uploads/NCG%20trabajos%20realizados%20${i}.jpeg`;
+
+  const frag = document.createDocumentFragment();
+  for (let i = 1; i <= TOTAL; i++){
+    const fig = document.createElement('figure');
+    const img = document.createElement('img');
+    img.src = imgUrl(i);
+    img.alt = `Trabajo NCG ${i}`;
+    img.loading = 'lazy';
+    fig.appendChild(img);
+    frag.appendChild(fig);
+  }
+  grid.appendChild(frag);
+
+  /* ---- Carrusel de tarjetas (sección Trabajos) ---- */
+  const track = document.getElementById('carTrack');
+  const dotsBox = document.getElementById('carDots');
+  const prevBtn = document.getElementById('carPrev');
+  const nextBtn = document.getElementById('carNext');
+  if (track && dotsBox && prevBtn && nextBtn){
+    const tFrag = document.createDocumentFragment();
+    for (let i = 1; i <= TOTAL; i++){
+      const s = document.createElement('div');
+      s.className = 'car-slide';
+      s.dataset.idx = i - 1;
+      s.innerHTML = `<img src="${imgUrl(i)}" alt="Trabajo NCG ${i}" loading="lazy">`;
+      tFrag.appendChild(s);
+    }
+    track.appendChild(tFrag);
+
+    let pos = 0;
+    const slides = track.querySelectorAll('.car-slide');
+    const update = () => {
+      slides.forEach((s, i) => s.classList.toggle('active', i === pos));
+    };
+    const go = (delta) => {
+      pos = (pos + delta + TOTAL) % TOTAL;
+      update(); restart();
+    };
+    prevBtn.addEventListener('click', () => go(-1));
+    nextBtn.addEventListener('click', () => go(1));
+
+    let timer = null;
+    const start = () => { stop(); timer = setInterval(() => go(1), 1300); };
+    const stop  = () => { if (timer){ clearInterval(timer); timer = null; } };
+    const restart = () => { if (timer){ start(); } };
+    const car = document.getElementById('galCarousel');
+    car.addEventListener('mouseenter', stop);
+    car.addEventListener('mouseleave', start);
+
+    track.addEventListener('click', (e) => {
+      const s = e.target.closest('.car-slide');
+      if (s && s.classList.contains('active')) openLb(parseInt(s.dataset.idx, 10));
+    });
+
+    update(); start();
+  }
+
+  const open = (e) => {
+    if (e) e.preventDefault();
+    overlay.classList.add('open');
+    overlay.setAttribute('aria-hidden','false');
+    document.body.classList.add('gallery-locked');
+  };
+  const close = () => {
+    overlay.classList.remove('open');
+    overlay.setAttribute('aria-hidden','true');
+    document.body.classList.remove('gallery-locked');
+  };
+
+  openBtn.addEventListener('click', open);
+  closeBtn && closeBtn.addEventListener('click', close);
+  overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+
+  const openSectionBtn = document.getElementById('openGalleryFromSection');
+  if (openSectionBtn) openSectionBtn.addEventListener('click', open);
+
+  /* ---- Lightbox ---- */
+  const lb = document.getElementById('lightbox');
+  const lbImg = document.getElementById('lbImg');
+  const lbClose = document.getElementById('lbClose');
+  const lbPrev = document.getElementById('lbPrev');
+  const lbNext = document.getElementById('lbNext');
+  const lbCounter = document.getElementById('lbCounter');
+  let lbIndex = 0;
+
+  const showLb = (i) => {
+    lbIndex = (i + TOTAL) % TOTAL;
+    lbImg.src = `uploads/NCG%20trabajos%20realizados%20${lbIndex + 1}.jpeg`;
+    lbImg.alt = `Trabajo NCG ${lbIndex + 1}`;
+    lbCounter.textContent = `${lbIndex + 1} / ${TOTAL}`;
+  };
+  const openLb = (i) => {
+    showLb(i);
+    lb.classList.add('open');
+    lb.setAttribute('aria-hidden','false');
+    document.body.classList.add('gallery-locked');
+  };
+  const closeLb = () => {
+    lb.classList.remove('open');
+    lb.setAttribute('aria-hidden','true');
+    if (!overlay.classList.contains('open')) document.body.classList.remove('gallery-locked');
+  };
+
+  grid.addEventListener('click', (e) => {
+    const fig = e.target.closest('figure');
+    if (!fig) return;
+    const i = Array.from(grid.children).indexOf(fig);
+    if (i >= 0) openLb(i);
+  });
+  lbClose.addEventListener('click', closeLb);
+  lbPrev.addEventListener('click', () => showLb(lbIndex - 1));
+  lbNext.addEventListener('click', () => showLb(lbIndex + 1));
+  lb.addEventListener('click', (e) => { if (e.target === lb) closeLb(); });
+
+  document.addEventListener('keydown', (e) => {
+    if (lb.classList.contains('open')){
+      if (e.key === 'Escape') closeLb();
+      else if (e.key === 'ArrowLeft') showLb(lbIndex - 1);
+      else if (e.key === 'ArrowRight') showLb(lbIndex + 1);
+    } else if (e.key === 'Escape' && overlay.classList.contains('open')) close();
+  });
+})();

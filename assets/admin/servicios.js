@@ -130,7 +130,10 @@
     const it = id ? all.find(s => s.id === id) : null;
     const html = `
       <div class="dialog is-open" id="srvDlg">
-        <div class="dialog-card" style="width:min(640px,100%)">
+        <div class="dialog-card" style="width:min(640px,100%);position:relative">
+          <button type="button" class="dlg-close" data-cancel aria-label="Cerrar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
           <h3>${it ? 'Editar servicio' : 'Nuevo servicio'}</h3>
           <p>Datos del servicio que aparece en la web pública.</p>
           <form id="srvForm">
@@ -176,8 +179,7 @@
     document.body.appendChild(dlg);
 
     const close = () => dlg.remove();
-    dlg.querySelector('[data-cancel]').addEventListener('click', close);
-    dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
+    dlg.querySelectorAll('[data-cancel]').forEach(b => b.addEventListener('click', close));
 
     dlg.querySelector('#srvForm').addEventListener('submit', async (ev) => {
       ev.preventDefault();

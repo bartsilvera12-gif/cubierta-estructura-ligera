@@ -8,6 +8,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="assets/logo-ncg.png">
+<link rel="shortcut icon" type="image/png" href="assets/logo-ncg.png">
+<link rel="apple-touch-icon" href="assets/logo-ncg.png">
 <link rel="stylesheet" href="assets/styles.css">
 <script>document.documentElement.classList.add('js-anim');</script>
 <script src="assets/image-slot.js"></script>
@@ -23,9 +26,11 @@
       <span class="brand-logo"><img src="assets/logo-banner.jpg" alt="NCG Cubierta Estructura Ligera y Rehabilitación de Cubiertas"></span>
     </a>
     <nav class="nav">
+      <a href="#top" id="goTop">Inicio</a>
       <a href="#servicios">Servicios</a>
       <a href="#garantias">Garantías</a>
       <a href="#galeria">Trabajos</a>
+      <a href="#" id="openGallery">Galería</a>
       <a href="#sobre">Empresa</a>
       <a href="#contacto">Contacto</a>
     </nav>
@@ -42,7 +47,7 @@
 <!-- ============ HERO ============ -->
 <section class="hero" data-screen-label="Hero">
   <div class="hero-bg">
-    <div class="hero-photo"><image-slot id="hero" placeholder="Foto real: tejado / cubierta terminada" fit="cover"></image-slot></div>
+    <div class="hero-photo"><img id="heroImg" src="uploads/NCG%20trabajos%20realizados%208.jpeg" alt="Estructura metálica ligera NCG"></div>
   </div>
   <div class="beams"><span style="left:18%"></span><span style="left:34%"></span><span style="left:62%"></span><span style="left:81%"></span></div>
   <div class="hero-build" aria-hidden="true">
@@ -199,28 +204,36 @@
         <span class="eyebrow light">El diferencial NCG</span>
         <h2>Trabajos duraderos, resistentes y con respaldo</h2>
         <p>Ofrecemos variedad y calidad en cada trabajo, con técnicos profesionales y especializados. Nuestros servicios cuentan con certificaciones y garantía real, por escrito.</p>
-        <ul class="gar-list">
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Técnicos profesionales y especializados</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Servicios con certificados</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Materiales de primera calidad</li>
-          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>Trabajos duraderos y resistentes</li>
-        </ul>
+        <div class="gar-cards">
+          <div class="stat-card">
+            <div class="lab gar-title">Técnicos Profesionales</div>
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+          </div>
+          <div class="stat-card">
+            <div class="lab gar-title">Materiales de primera calidad</div>
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 6 .9-4.5 4.3L18 20l-6-3-6 3 1.5-6.8L3 8.9 9 8z"/></svg></div>
+          </div>
+          <div class="stat-card">
+            <div class="lab gar-title">Trabajos duraderos y resistentes</div>
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div>
+          </div>
+        </div>
       </div>
       <div class="stat-cards reveal-r">
         <div class="stat-card">
-          <div class="big"><span data-count="10" data-prefix="">0</span></div>
-          <div class="lab">Años de garantía en mano de obra</div>
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div>
-        </div>
-        <div class="stat-card">
-          <div class="big"><span class="suf">+</span><span data-count="20" data-prefix="">0</span></div>
-          <div class="lab">Años de garantía en materiales</div>
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 6 .9-4.5 4.3L18 20l-6-3-6 3 1.5-6.8L3 8.9 9 8z"/></svg></div>
+          <div class="big"><span data-count="100" data-prefix="">0</span><span class="suf">%</span></div>
+          <div class="lab">Técnicos profesionales</div>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
         </div>
         <div class="stat-card">
           <div class="big"><span data-count="100" data-prefix="">0</span><span class="suf">%</span></div>
-          <div class="lab">Técnicos certificados</div>
-          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div>
+          <div class="lab">Materiales de primera calidad</div>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 6 .9-4.5 4.3L18 20l-6-3-6 3 1.5-6.8L3 8.9 9 8z"/></svg></div>
+        </div>
+        <div class="stat-card">
+          <div class="big"><span class="suf">+</span><span data-count="15" data-prefix="">0</span></div>
+          <div class="lab">Años de experiencia</div>
+          <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
         </div>
         <div class="stat-card">
           <div class="big"><span data-count="15" data-prefix="">0</span><span class="suf">+</span></div>
@@ -248,16 +261,21 @@
       <h2>Proyectos reales, resultados sólidos</h2>
       <p>Tejados de madera, cubiertas, claraboyas Velux, impermeabilizaciones y cubiertas modernas.</p>
     </div>
-    <div class="gal-grid">
-      <div class="gal-item span-2 row-2 reveal"><image-slot id="gal1" placeholder="Tejado de madera (foto real)" fit="cover"></image-slot><span class="tag"><b>·</b> Tejados de madera</span></div>
-      <div class="gal-item reveal d2"><image-slot id="gal3" placeholder="Claraboya / Velux" fit="cover"></image-slot><span class="tag"><b>·</b> Claraboyas Velux</span></div>
-      <div class="gal-item span-2 reveal d1"><image-slot id="gal4" placeholder="Impermeabilización" fit="cover"></image-slot><span class="tag"><b>·</b> Impermeabilización</span></div>
-      <div class="gal-item reveal d2"><image-slot id="gal5" placeholder="Panel sándwich" fit="cover"></image-slot><span class="tag"><b>·</b> Paneles modernos</span></div>
-      <div class="gal-item reveal d3"><image-slot id="gal6" placeholder="Estructura ligera" fit="cover"></image-slot><span class="tag"><b>·</b> Estructuras ligeras</span></div>
-      <div class="gal-item span-2 reveal"><image-slot id="gal7" placeholder="Cubierta terminada" fit="cover"></image-slot><span class="tag"><b>·</b> Cubiertas modernas</span></div>
-      <div class="gal-item reveal d1"><image-slot id="gal8" placeholder="Detalle de remate" fit="cover"></image-slot><span class="tag"><b>·</b> Acabados</span></div>
-      <div class="gal-item reveal d2"><image-slot id="gal9" placeholder="Canalón / bajante" fit="cover"></image-slot><span class="tag"><b>·</b> Canalones</span></div>
+    <div class="carousel reveal" id="galCarousel">
+      <button class="car-btn car-prev" id="carPrev" aria-label="Anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+      </button>
+      <div class="car-viewport">
+        <div class="car-track" id="carTrack"></div>
+      </div>
+      <button class="car-btn car-next" id="carNext" aria-label="Siguiente">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+      </button>
+      <div class="car-dots" id="carDots"></div>
     </div>
+    <p class="gal-foot reveal">
+      <a href="#" id="openGalleryFromSection" class="btn btn-outline">Ver galería completa</a>
+    </p>
   </div>
 </section>
 
@@ -266,7 +284,7 @@
   <div class="wrap">
     <div class="sobre-grid">
       <div class="sobre-media reveal-l">
-        <image-slot id="sobre" placeholder="Foto del equipo / obra en proceso" fit="cover"></image-slot>
+        <img src="assets/sobre-empresa.webp" alt="Equipo NCG trabajando en estructura ligera">
         <div class="badge"><b>NCG</b><span>Soluciones ligeras · Resultados sólidos</span></div>
       </div>
       <div class="sobre-text reveal-r">
@@ -277,96 +295,6 @@
         <div class="sobre-feats">
           <div class="sf"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-6 8-6s8 2 8 6"/></svg></div><div><b>Equipo especializado</b><span>Técnicos formados y certificados</span></div></div>
           <div class="sf"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg></div><div><b>Cubiertas ligeras</b><span>Cálculo y montaje a medida</span></div></div>
-          <div class="sf"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 6 6 .9-4.5 4.3L18 20l-6-3-6 3 1.5-6.8L3 8.9 9 8z"/></svg></div><div><b>Primera calidad</b><span>Materiales con +20 años de garantía</span></div></div>
-          <div class="sf"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4"/><path d="M12 3l8 4v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/></svg></div><div><b>Garantía real</b><span>10 años en mano de obra</span></div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ CONTACTO ============ -->
-<section class="contacto sec-pad" id="contacto" data-screen-label="Contacto">
-  <div class="cbg"><span style="left:22%"></span><span style="left:55%"></span><span style="left:82%"></span></div>
-  <div class="wrap">
-    <div class="cont-grid">
-      <div class="cont-info reveal-l">
-        <span class="eyebrow light">Solicita tu presupuesto</span>
-        <h2>Hablemos de tu cubierta</h2>
-        <p>Cuéntanos qué necesitas y te damos un presupuesto rápido, sin compromiso. Respondemos por WhatsApp en minutos.</p>
-        <div class="cont-rows">
-          <a class="crow" href="https://wa.me/34638769281?text=Hola%20NCG,%20quiero%20solicitar%20un%20presupuesto" target="_blank">
-            <div class="ic wa"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg></div>
-            <div><b>638 769 281</b><span>WhatsApp · respuesta rápida</span></div>
-          </a>
-          <a class="crow" href="tel:+34638769281">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.8 19.8 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.8 19.8 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg></div>
-            <div><b>638 769 281</b><span>Llámanos directamente</span></div>
-          </a>
-          <a class="crow" href="mailto:Ncgtrans@gmail.com">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></div>
-            <div><b>Ncgtrans@gmail.com</b><span>Escríbenos un email</span></div>
-          </a>
-        </div>
-      </div>
-      <div class="form-wrap reveal-r">
-        <div class="form-card">
-          <form id="cf" novalidate>
-            <h3>Solicita tu presupuesto gratis</h3>
-            <p>Rellena el formulario y abriremos WhatsApp con tus datos listos para enviar.</p>
-            <div class="fgrid">
-              <div class="field">
-                <label>Nombre <span class="req">*</span></label>
-                <input type="text" name="nombre" placeholder="Tu nombre" autocomplete="name">
-                <span class="msg" data-msg="nombre"></span>
-              </div>
-              <div class="field">
-                <label>Teléfono <span class="req">*</span></label>
-                <input type="tel" name="telefono" placeholder="600 000 000" autocomplete="tel">
-                <span class="msg" data-msg="telefono"></span>
-              </div>
-            </div>
-            <div class="fgrid">
-              <div class="field">
-                <label>Servicio requerido <span class="req">*</span></label>
-                <select name="servicio">
-                  <option value="">Selecciona…</option>
-                  <option>Reparación / mantenimiento de tejado</option>
-                  <option>Retejado / sustitución de tejas</option>
-                  <option>Tejas curvas</option>
-                  <option>Impermeabilización y aislamiento</option>
-                  <option>Sistemas ventilados</option>
-                  <option>Paneles sándwich grecados</option>
-                  <option>Canalones y bajantes</option>
-                  <option>Ventanas / claraboyas Velux</option>
-                  <option>Cubiertas ligeras</option>
-                  <option>Cálculo y montaje de cubiertas</option>
-                  <option>Cubiertas de madera · GL24</option>
-                  <option>Otro / no estoy seguro</option>
-                </select>
-                <span class="msg" data-msg="servicio"></span>
-              </div>
-              <div class="field">
-                <label>Zona o ciudad</label>
-                <input type="text" name="zona" placeholder="Ej. Madrid">
-              </div>
-            </div>
-            <div class="field full">
-              <label>Mensaje <span class="req">*</span></label>
-              <textarea name="mensaje" placeholder="Cuéntanos brevemente qué necesitas…"></textarea>
-              <span class="msg" data-msg="mensaje"></span>
-            </div>
-            <button type="submit" class="btn">
-              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163a11.867 11.867 0 01-1.587-5.945C.16 5.335 5.495 0 12.05 0a11.817 11.817 0 018.413 3.488 11.824 11.824 0 013.48 8.414c-.003 6.557-5.338 11.892-11.893 11.892a11.9 11.9 0 01-5.688-1.448L.057 24zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884a9.86 9.86 0 001.51 5.26l-.999 3.648 3.978-1.207z"/></svg>
-              Enviar por WhatsApp
-            </button>
-            <p class="form-note">También puedes llamar al <b>638 769 281</b></p>
-          </form>
-          <div class="form-ok">
-            <div class="check"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg></div>
-            <h3>¡Listo!</h3>
-            <p>Hemos abierto WhatsApp con tu solicitud. Si no se abrió, escríbenos al <b>638 769 281</b>.</p>
-          </div>
         </div>
       </div>
     </div>
@@ -400,7 +328,7 @@
       <div class="foot-col">
         <h4>Contacto</h4>
         <ul>
-          <li><a href="tel:+34638769281">638 769 281</a></li>
+          <li><a href="tel:+34638769281">+34 638 769 281</a></li>
           <li><a href="mailto:Ncgtrans@gmail.com">Ncgtrans@gmail.com</a></li>
           <li><a href="https://wa.me/34638769281" target="_blank">WhatsApp directo</a></li>
         </ul>
@@ -429,6 +357,35 @@
     <p class="search-empty" id="searchEmpty" hidden>Sin resultados. Prueba con otra palabra.</p>
     <p class="search-hint" id="searchHint">Empieza a escribir. Usa <kbd>↑</kbd> <kbd>↓</kbd> para navegar y <kbd>Enter</kbd> para ir.</p>
   </div>
+</div>
+
+<!-- ============ GALERÍA OVERLAY ============ -->
+<div class="gallery-overlay" id="galleryOverlay" aria-hidden="true" role="dialog" aria-label="Galería de trabajos">
+  <div class="gov-head">
+    <div>
+      <span class="gov-eyebrow">Galería completa</span>
+      <h2>Trabajos realizados</h2>
+    </div>
+    <button class="gov-close" id="closeGallery" aria-label="Cerrar galería">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+    </button>
+  </div>
+  <div class="gov-grid" id="govGrid"></div>
+</div>
+
+<!-- ============ LIGHTBOX ============ -->
+<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-label="Imagen ampliada">
+  <button class="lb-close" id="lbClose" aria-label="Cerrar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  </button>
+  <button class="lb-nav lb-prev" id="lbPrev" aria-label="Anterior">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 18l-6-6 6-6"/></svg>
+  </button>
+  <img class="lb-img" id="lbImg" alt="">
+  <button class="lb-nav lb-next" id="lbNext" aria-label="Siguiente">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 6l6 6-6 6"/></svg>
+  </button>
+  <div class="lb-counter" id="lbCounter"></div>
 </div>
 
 <!-- ============ WHATSAPP FLOTANTE ============ -->
