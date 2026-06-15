@@ -300,17 +300,94 @@
   const TOTAL = 28;
   const imgUrl = (i) => `uploads/NCG%20trabajos%20realizados%20${i}.jpeg`;
 
+  // Catálogo de trabajos. category ∈ techos|madera|policarbonato|estructuras|finalizados
+  const CATEGORIES = {
+    techos:        { label:'Techos',        desc:'Reparación, retejado y mantenimiento de cubiertas.' },
+    madera:        { label:'Madera',        desc:'Estructura y vigas de madera tratada de primera calidad.' },
+    policarbonato: { label:'Policarbonato', desc:'Claraboyas y cubiertas translúcidas con paso de luz.' },
+    estructuras:   { label:'Estructuras',   desc:'Estructura metálica ligera, cálculo y montaje a medida.' },
+    finalizados:   { label:'Finalizados',   desc:'Obras entregadas con acabados de detalle y garantía.' },
+  };
+  const GALLERY = [
+    { i:1,  cat:'madera',        title:'Tejado de madera vista' },
+    { i:2,  cat:'techos',        title:'Retejado completo' },
+    { i:3,  cat:'techos',        title:'Sustitución de tejas' },
+    { i:4,  cat:'policarbonato', title:'Claraboya curva de policarbonato' },
+    { i:5,  cat:'techos',        title:'Cubierta de teja curva' },
+    { i:6,  cat:'techos',        title:'Mantenimiento de cubierta' },
+    { i:7,  cat:'techos',        title:'Cumbrera y remates' },
+    { i:8,  cat:'estructuras',   title:'Estructura metálica ligera' },
+    { i:9,  cat:'estructuras',   title:'Montaje de cerchas' },
+    { i:10, cat:'finalizados',   title:'Obra entregada' },
+    { i:11, cat:'finalizados',   title:'Cubierta terminada' },
+    { i:12, cat:'madera',        title:'Vigas de madera laminada' },
+    { i:13, cat:'techos',        title:'Tejado restaurado' },
+    { i:14, cat:'techos',        title:'Cubierta rehabilitada' },
+    { i:15, cat:'policarbonato', title:'Cubierta translúcida' },
+    { i:16, cat:'estructuras',   title:'Pórticos metálicos' },
+    { i:17, cat:'estructuras',   title:'Estructura en obra' },
+    { i:18, cat:'techos',        title:'Trabajo en cubierta' },
+    { i:19, cat:'techos',        title:'Cubierta mixta' },
+    { i:20, cat:'finalizados',   title:'Proyecto finalizado' },
+    { i:21, cat:'madera',        title:'Detalle de madera' },
+    { i:22, cat:'techos',        title:'Tejado intervenido' },
+    { i:23, cat:'techos',        title:'Acabado de teja' },
+    { i:24, cat:'techos',        title:'Cubierta tradicional' },
+    { i:25, cat:'finalizados',   title:'Entrega final' },
+    { i:26, cat:'estructuras',   title:'Estructura ligera montada' },
+    { i:27, cat:'estructuras',   title:'Cubierta sobre estructura' },
+    { i:28, cat:'finalizados',   title:'Resultado final' },
+  ];
+  const waLink = (title) =>
+    `https://wa.me/34638769281?text=${encodeURIComponent('Hola NCG, quiero cotizar un trabajo similar a: ' + title)}`;
+
+  // Render del masonry con overlay
   const frag = document.createDocumentFragment();
-  for (let i = 1; i <= TOTAL; i++){
+  GALLERY.forEach((item, idx) => {
+    const meta = CATEGORIES[item.cat] || { label:item.cat, desc:'' };
     const fig = document.createElement('figure');
-    const img = document.createElement('img');
-    img.src = imgUrl(i);
-    img.alt = `Trabajo NCG ${i}`;
-    img.loading = 'lazy';
-    fig.appendChild(img);
+    fig.dataset.cat = item.cat;
+    fig.dataset.idx = idx;
+    fig.innerHTML = `
+      <img src="${imgUrl(item.i)}" alt="${item.title}" loading="lazy">
+      <figcaption class="fig-overlay">
+        <span class="fig-cat">${meta.label}</span>
+        <h4 class="fig-title">${item.title}</h4>
+        <p class="fig-desc">${meta.desc}</p>
+        <span class="fig-link">Ver proyecto</span>
+      </figcaption>`;
     frag.appendChild(fig);
-  }
+  });
   grid.appendChild(frag);
+
+  // Fade-in al cargar (con IntersectionObserver para revelar al scroll del overlay)
+  const figs = grid.querySelectorAll('figure');
+  const revealAll = () => requestAnimationFrame(() => figs.forEach((f, k) => {
+    setTimeout(() => f.classList.add('in'), Math.min(k * 35, 600));
+  }));
+
+  // ---- Filtros ----
+  const filtersBox = document.getElementById('govFilters');
+  const emptyEl = document.getElementById('govEmpty');
+  let currentFilter = 'todos';
+  const applyFilter = (cat) => {
+    currentFilter = cat;
+    let visibles = 0;
+    figs.forEach(f => {
+      const match = (cat === 'todos') || (f.dataset.cat === cat);
+      f.classList.toggle('is-hidden', !match);
+      if (match) visibles++;
+    });
+    if (emptyEl) emptyEl.hidden = visibles > 0;
+  };
+  if (filtersBox){
+    filtersBox.addEventListener('click', (e) => {
+      const btn = e.target.closest('.gov-chip');
+      if (!btn) return;
+      filtersBox.querySelectorAll('.gov-chip').forEach(b => b.classList.toggle('is-active', b === btn));
+      applyFilter(btn.dataset.filter);
+    });
+  }
 
   /* ---- Carrusel de tarjetas (sección Trabajos) ---- */
   const track = document.getElementById('carTrack');
@@ -361,6 +438,9 @@
     overlay.classList.add('open');
     overlay.setAttribute('aria-hidden','false');
     document.body.classList.add('gallery-locked');
+    // Reset fade-in para que se vuelva a animar al reabrir
+    figs.forEach(f => f.classList.remove('in'));
+    revealAll();
   };
   const close = () => {
     overlay.classList.remove('open');
@@ -382,13 +462,23 @@
   const lbPrev = document.getElementById('lbPrev');
   const lbNext = document.getElementById('lbNext');
   const lbCounter = document.getElementById('lbCounter');
+  const lbCat = document.getElementById('lbCat');
+  const lbTitle = document.getElementById('lbTitle');
+  const lbDesc = document.getElementById('lbDesc');
+  const lbWa = document.getElementById('lbWa');
   let lbIndex = 0;
 
   const showLb = (i) => {
-    lbIndex = (i + TOTAL) % TOTAL;
-    lbImg.src = `uploads/NCG%20trabajos%20realizados%20${lbIndex + 1}.jpeg`;
-    lbImg.alt = `Trabajo NCG ${lbIndex + 1}`;
-    lbCounter.textContent = `${lbIndex + 1} / ${TOTAL}`;
+    lbIndex = (i + GALLERY.length) % GALLERY.length;
+    const item = GALLERY[lbIndex];
+    const meta = CATEGORIES[item.cat] || { label:item.cat, desc:'' };
+    lbImg.src = imgUrl(item.i);
+    lbImg.alt = item.title;
+    if (lbCat)     lbCat.textContent = meta.label;
+    if (lbTitle)   lbTitle.textContent = item.title;
+    if (lbDesc)    lbDesc.textContent = meta.desc;
+    if (lbWa)      lbWa.href = waLink(item.title);
+    if (lbCounter) lbCounter.textContent = `${lbIndex + 1} / ${GALLERY.length}`;
   };
   const openLb = (i) => {
     showLb(i);
@@ -405,8 +495,8 @@
   grid.addEventListener('click', (e) => {
     const fig = e.target.closest('figure');
     if (!fig) return;
-    const i = Array.from(grid.children).indexOf(fig);
-    if (i >= 0) openLb(i);
+    const i = parseInt(fig.dataset.idx, 10);
+    if (Number.isFinite(i)) openLb(i);
   });
   lbClose.addEventListener('click', closeLb);
   lbPrev.addEventListener('click', () => showLb(lbIndex - 1));
