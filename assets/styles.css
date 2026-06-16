@@ -344,7 +344,6 @@ section{position:relative}
 .serv-ic svg{width:28px;height:28px}
 .serv-card h3{font-size:1.18rem;margin-bottom:8px}
 .serv-card p{color:var(--steel);font-size:.96rem}
-.serv-num{position:absolute;top:22px;right:24px;font-family:"Archivo";font-weight:800;font-size:1rem;color:var(--line)}
 
 /* ============================================================
    DIFERENCIALES / GARANTÍAS
