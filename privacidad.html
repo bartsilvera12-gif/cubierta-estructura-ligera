@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Política de Privacidad · NCG Cubierta Estructura Ligera</title>
+<meta name="description" content="Política de privacidad y tratamiento de datos personales de NCG · Cubierta Estructura Ligera.">
+<meta name="robots" content="index, follow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800;900&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="assets/logo-ncg.png">
+<link rel="shortcut icon" type="image/png" href="assets/logo-ncg.png">
+<link rel="apple-touch-icon" href="assets/logo-ncg.png">
+<link rel="stylesheet" href="assets/styles.css">
+<script>document.documentElement.classList.add('js-anim');</script>
+<style>
+  /* ===== Página legal ===== */
+  .legal{
+    background:var(--paper);
+    padding:clamp(110px,13vw,180px) 0 clamp(60px,8vw,100px);
+    min-height:60vh;
+    position:relative;
+  }
+  .legal::before{
+    content:"";position:absolute;inset:0 0 auto 0;height:280px;pointer-events:none;
+    background:radial-gradient(900px 280px at 50% -40%,rgba(46,125,246,.10),transparent 70%);
+  }
+  .legal .wrap{max-width:920px;position:relative}
+  .legal-head{margin-bottom:48px;border-bottom:1px solid var(--line);padding-bottom:28px}
+  .legal-head .eyebrow{margin-bottom:16px}
+  .legal-head h1{
+    font-size:clamp(1.9rem,4.6vw,3.4rem);
+    margin-bottom:14px;
+    line-height:1.05;
+  }
+  .legal-head p.lead{color:var(--steel);font-size:1.08rem;max-width:680px}
+  .legal-meta{
+    display:flex;flex-wrap:wrap;gap:10px 28px;
+    margin-top:22px;font-size:.9rem;color:var(--steel-light)
+  }
+  .legal-meta b{color:var(--ink);font-weight:700}
+  .legal-body h2{
+    font-size:clamp(1.25rem,2.2vw,1.7rem);
+    margin:48px 0 14px;
+    padding-top:8px;
+    line-height:1.2;
+  }
+  .legal-body h3{
+    font-size:1.05rem;
+    margin:24px 0 10px;
+    color:var(--graphite);
+    font-weight:700;
+  }
+  .legal-body p, .legal-body li{
+    color:#2c3340;font-size:1rem;line-height:1.75;
+  }
+  .legal-body p{margin:0 0 14px}
+  .legal-body ul, .legal-body ol{margin:0 0 14px 22px}
+  .legal-body li{margin-bottom:6px}
+  .legal-body a{color:var(--blue);text-decoration:underline;text-underline-offset:3px;word-break:break-word}
+  .legal-body a:hover{color:var(--blue-deep)}
+  .legal-body strong{color:var(--ink)}
+  .legal-body .callout{
+    background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);
+    padding:18px 22px;border-radius:10px;margin:18px 0 22px;
+    box-shadow:var(--shadow);
+    word-wrap:break-word;
+  }
+  .legal-body .callout p:last-child{margin-bottom:0}
+
+  /* Tabla con scroll horizontal en mobile */
+  .table-wrap{
+    margin:16px 0 22px;
+    border:1px solid var(--line);border-radius:10px;
+    background:#fff;overflow:hidden;
+  }
+  .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  .legal-body .data-table{
+    width:100%;border-collapse:collapse;min-width:520px;
+  }
+  .legal-body .data-table th,
+  .legal-body .data-table td{
+    text-align:left;padding:12px 16px;border-bottom:1px solid var(--line);
+    font-size:.95rem;vertical-align:top;
+  }
+  .legal-body .data-table th{
+    background:var(--silver);color:var(--ink);font-weight:700;
+    font-family:"Archivo",sans-serif;font-size:.85rem;
+    text-transform:uppercase;letter-spacing:.04em;
+    white-space:nowrap;
+  }
+  .legal-body .data-table tr:last-child td{border-bottom:none}
+
+  .legal-back{
+    display:inline-flex;align-items:center;gap:8px;
+    margin-top:40px;padding:12px 22px;
+    border:1.5px solid var(--line);border-radius:10px;
+    color:var(--ink);font-weight:600;font-family:"Archivo",sans-serif;
+    transition:all .2s var(--ease);
+    background:#fff;
+  }
+  .legal-back:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-2px);box-shadow:var(--shadow-blue)}
+  .legal-back svg{width:18px;height:18px;transition:transform .25s var(--ease)}
+  .legal-back:hover svg{transform:translateX(-3px)}
+
+  /* Header simplificado para páginas legales */
+  .header-legal{
+    background:#fff;border-bottom:1px solid var(--line);
+    position:sticky;top:0;z-index:100;
+  }
+  .header-legal .header-inner{padding:14px 0}
+  .header-legal .brand-logo img{max-height:54px;width:auto}
+  .header-legal .nav a{color:var(--steel)}
+  .header-legal .nav a:hover{color:var(--blue)}
+  .header-legal.scrolled{box-shadow:0 6px 24px -16px rgba(16,20,28,.25)}
+  .header-legal.scrolled .header-inner{padding:10px 0}
+  .header-legal.scrolled .brand-logo img{max-height:46px}
+
+  /* ===== Mobile (≤ 760px) ===== */
+  @media (max-width:760px){
+    .header-legal .nav,
+    .header-legal .header-cta{display:none}
+    .header-legal .menu-toggle{display:flex}
+    .header-legal .nav.open{
+      display:flex;position:absolute;top:100%;left:0;right:0;flex-direction:column;
+      background:#fff;padding:22px 24px;gap:16px;box-shadow:var(--shadow);
+      border-top:1px solid var(--line);
+    }
+    .header-legal .nav.open a{color:var(--ink);font-size:1.05rem}
+
+    .legal{padding-top:88px}
+    .legal .wrap{padding:0 22px}
+    .legal-head{margin-bottom:36px;padding-bottom:22px}
+    .legal-head p.lead{font-size:1rem}
+    .legal-meta{flex-direction:column;gap:6px}
+    .legal-body h2{margin:36px 0 12px}
+    .legal-body p, .legal-body li{font-size:.97rem;line-height:1.7}
+    .legal-body ul, .legal-body ol{margin-left:18px}
+    .legal-body .callout{padding:16px 18px;border-radius:8px}
+    .legal-body .callout p{font-size:.95rem}
+    .legal-back{width:100%;justify-content:center;margin-top:32px}
+  }
+
+  /* ===== Small mobile (≤ 420px) ===== */
+  @media (max-width:420px){
+    .header-legal .brand-logo img{max-height:44px}
+    .legal-head h1{font-size:1.7rem}
+    .legal-body h2{font-size:1.15rem}
+    .legal-body .callout{padding:14px 16px}
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="sp"></div>
+
+<!-- ============ HEADER ============ -->
+<header class="header header-legal">
+  <div class="wrap header-inner">
+    <a href="index.html" class="brand">
+      <span class="brand-logo"><img src="assets/logo-banner.jpg" alt="NCG Cubierta Estructura Ligera"></span>
+    </a>
+    <nav class="nav">
+      <a href="index.html">Inicio</a>
+      <a href="index.html#servicios">Servicios</a>
+      <a href="index.html#galeria">Trabajos</a>
+      <a href="index.html#sobre">Empresa</a>
+      <a href="index.html#contacto">Contacto</a>
+    </nav>
+    <div class="header-cta">
+      <a href="index.html#contacto" class="btn btn-ghost">Presupuesto</a>
+    </div>
+    <button class="menu-toggle" aria-label="Menú"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<!-- ============ POLÍTICA DE PRIVACIDAD ============ -->
+<main class="legal">
+  <div class="wrap">
+
+    <div class="legal-head">
+      <span class="eyebrow">Información legal</span>
+      <h1>Política de Privacidad</h1>
+      <p class="lead">En <strong>NCG · Cubierta Estructura Ligera</strong> respetamos tu privacidad y nos comprometemos a proteger los datos personales que nos confías. Este documento explica qué información recopilamos, con qué finalidad, durante cuánto tiempo y cuáles son tus derechos.</p>
+      <div class="legal-meta">
+        <span><b>Última actualización:</b> 16 de junio de 2026</span>
+        <span><b>Versión:</b> 1.0</span>
+      </div>
+    </div>
+
+    <div class="legal-body">
+
+      <!-- ============================================================
+           DATOS DEL RESPONSABLE — EDITAR POR CLIENTE
+           Reemplazar: nombre comercial, razón social, identificación
+           fiscal (CIF/NIF/RUC), dirección, email y teléfono.
+      ============================================================== -->
+      <h2>1. Responsable del tratamiento de los datos</h2>
+      <p>El responsable del tratamiento de los datos personales recopilados a través de este sitio web es:</p>
+      <div class="callout">
+        <p><strong>Nombre comercial:</strong> NCG · Cubierta Estructura Ligera</p>
+        <p><strong>Razón social:</strong> NCG Cubierta Estructura Ligera</p>
+        <p><strong>Identificación fiscal (CIF/NIF/RUC):</strong> [completar por el cliente]</p>
+        <p><strong>Domicilio:</strong> [dirección completa — completar por el cliente]</p>
+        <p><strong>Correo de contacto:</strong> <a href="mailto:Ncgtrans@gmail.com">Ncgtrans@gmail.com</a></p>
+        <p><strong>Teléfono:</strong> <a href="tel:+34638769281">+34 638 769 281</a></p>
+      </div>
+      <p>En adelante, nos referiremos a esta entidad como <strong>“el Responsable”</strong>, <strong>“nosotros”</strong> o <strong>“la Empresa”</strong>.</p>
+
+      <h2>2. Proveedor tecnológico (encargado del tratamiento)</h2>
+      <p>El diseño, desarrollo, alojamiento técnico y mantenimiento de este sitio web están a cargo de:</p>
+      <div class="callout">
+        <p><strong>Neura</strong> — proveedor tecnológico y encargado técnico del sitio.</p>
+        <p><strong>Sitio:</strong> <a href="https://neura.com.py" target="_blank" rel="noopener">neura.com.py</a></p>
+        <p><strong>Contacto:</strong> <a href="mailto:contacto@neura.com.py">contacto@neura.com.py</a></p>
+      </div>
+      <p>Neura actúa exclusivamente como <strong>encargado del tratamiento</strong> en los términos previstos por la normativa de protección de datos aplicable. Neura <strong>no es responsable de los datos</strong> recopilados a través de este sitio: trata la información únicamente bajo instrucción del Responsable y con las medidas de seguridad técnicas y organizativas razonables para su protección.</p>
+
+      <h2>3. Datos que recopilamos</h2>
+      <p>Recopilamos únicamente los datos estrictamente necesarios para prestar nuestros servicios y atender tus solicitudes. Los datos pueden incluir:</p>
+      <ul>
+        <li><strong>Datos de contacto:</strong> nombre, apellido, correo electrónico, teléfono.</li>
+        <li><strong>Datos sobre tu consulta:</strong> mensaje, tipo de servicio solicitado, ubicación aproximada del trabajo, archivos adjuntos cuando los envíes.</li>
+        <li><strong>Datos de navegación:</strong> dirección IP, tipo de dispositivo, navegador, páginas visitadas, fecha y hora de la visita, datos almacenados en cookies (ver sección 8).</li>
+      </ul>
+      <p>No solicitamos ni tratamos categorías especiales de datos (salud, ideología, religión, etc.). Si nos los facilitas voluntariamente en un mensaje libre, te pediremos que evites incluirlos.</p>
+
+      <h2>4. Finalidades del tratamiento</h2>
+      <p>Tratamos tus datos personales para las siguientes finalidades:</p>
+      <div class="table-wrap"><div class="table-scroll">
+        <table class="data-table">
+          <thead>
+            <tr><th>Finalidad</th><th>Tipo de datos</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Responder consultas y solicitudes de presupuesto recibidas por formularios, correo o WhatsApp.</td>
+              <td>Datos de contacto y datos de la consulta.</td>
+            </tr>
+            <tr>
+              <td>Gestionar la relación comercial: emisión de presupuestos, contratación y ejecución del servicio.</td>
+              <td>Datos de contacto, datos fiscales y datos del proyecto.</td>
+            </tr>
+            <tr>
+              <td>Enviar comunicaciones operativas relacionadas con un trabajo en curso.</td>
+              <td>Datos de contacto.</td>
+            </tr>
+            <tr>
+              <td>Cumplir obligaciones legales (facturación, garantías, requerimientos administrativos).</td>
+              <td>Datos fiscales y de proyecto.</td>
+            </tr>
+            <tr>
+              <td>Mejorar el sitio web y medir su rendimiento de manera agregada.</td>
+              <td>Datos de navegación anonimizados o seudonimizados.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div></div>
+
+      <h2>5. Base legal del tratamiento</h2>
+      <p>Las bases jurídicas que legitiman el tratamiento de tus datos son:</p>
+      <ul>
+        <li><strong>Tu consentimiento</strong>, prestado al enviar un formulario o iniciar una conversación con nosotros.</li>
+        <li><strong>La ejecución de un contrato</strong> o de medidas precontractuales a tu solicitud (por ejemplo, preparar un presupuesto).</li>
+        <li><strong>El cumplimiento de obligaciones legales</strong> aplicables al Responsable.</li>
+        <li><strong>El interés legítimo</strong> del Responsable en mejorar el sitio y garantizar su seguridad, siempre ponderado con tus derechos.</li>
+      </ul>
+
+      <h2>6. Conservación de los datos</h2>
+      <p>Conservamos tus datos durante el tiempo necesario para cumplir la finalidad para la que fueron recogidos y, posteriormente, durante los plazos legales aplicables (por ejemplo, plazos contables, fiscales o de garantía). Cuando ya no resulten necesarios, se eliminan o anonimizan de forma segura.</p>
+
+      <h2>7. Destinatarios y transferencias</h2>
+      <p>No vendemos ni cedemos tus datos a terceros con fines comerciales. Tus datos pueden ser tratados por:</p>
+      <ul>
+        <li><strong>Neura</strong>, como encargado técnico del sitio web (alojamiento, mantenimiento, soporte).</li>
+        <li><strong>Proveedores de infraestructura</strong> (alojamiento, correo electrónico, mensajería) contratados por el Responsable o por Neura, sujetos a confidencialidad y a la normativa de protección de datos.</li>
+        <li><strong>Autoridades públicas</strong>, cuando exista una obligación legal de informarles.</li>
+      </ul>
+      <p>Si para prestar el servicio se utilizan proveedores fuera del país, se exigen garantías adecuadas de protección de datos.</p>
+
+      <h2>8. Cookies</h2>
+      <p>Este sitio puede utilizar cookies propias y de terceros para asegurar el correcto funcionamiento, recordar tus preferencias y, en su caso, medir el uso del sitio de forma agregada. Puedes configurar o desactivar las cookies desde tu navegador. Algunas funcionalidades podrían dejar de estar disponibles si las rechazas.</p>
+
+      <h2>9. Tus derechos</h2>
+      <p>De acuerdo con la normativa aplicable de protección de datos personales, tienes derecho a:</p>
+      <ul>
+        <li><strong>Acceder</strong> a tus datos y obtener información sobre cómo los tratamos.</li>
+        <li><strong>Rectificar</strong> los datos inexactos o incompletos.</li>
+        <li><strong>Suprimir</strong> tus datos cuando ya no sean necesarios o retires tu consentimiento.</li>
+        <li><strong>Oponerte</strong> al tratamiento por motivos relacionados con tu situación particular.</li>
+        <li><strong>Limitar</strong> el tratamiento en los casos previstos por la ley.</li>
+        <li><strong>Portar</strong> tus datos en un formato estructurado y de uso común.</li>
+        <li><strong>Retirar el consentimiento</strong> en cualquier momento, sin afectar la licitud del tratamiento previo.</li>
+        <li><strong>Reclamar</strong> ante la autoridad de control competente si consideras que tus derechos no han sido atendidos.</li>
+      </ul>
+      <p>Para ejercer estos derechos, escríbenos a <a href="mailto:Ncgtrans@gmail.com">Ncgtrans@gmail.com</a> indicando claramente tu solicitud y, si corresponde, una copia de un documento que acredite tu identidad. Te responderemos en los plazos previstos por la ley aplicable.</p>
+
+      <h2>10. Seguridad</h2>
+      <p>Aplicamos medidas técnicas y organizativas razonables para proteger tus datos frente a accesos no autorizados, alteración, pérdida o tratamiento ilícito. Ningún sistema es infalible; en caso de incidente que afecte tus datos, actuaremos conforme a la normativa aplicable e informaremos cuando corresponda.</p>
+
+      <h2>11. Menores de edad</h2>
+      <p>Este sitio está dirigido a personas mayores de edad. No recopilamos de forma intencionada datos de menores. Si crees que un menor nos ha facilitado datos sin autorización, contáctanos para eliminarlos.</p>
+
+      <h2>12. Cambios en la política de privacidad</h2>
+      <p>Podemos actualizar esta política para adaptarla a cambios legales, técnicos u operativos. Cuando los cambios sean relevantes te lo notificaremos por los medios habituales. La versión vigente es la publicada en este sitio, identificada con la fecha de última actualización indicada al inicio.</p>
+
+      <h2>13. Contacto</h2>
+      <p>Si tienes dudas sobre esta política o quieres ejercer tus derechos, escríbenos:</p>
+      <div class="callout">
+        <p><strong>Correo:</strong> <a href="mailto:Ncgtrans@gmail.com">Ncgtrans@gmail.com</a></p>
+        <p><strong>Teléfono / WhatsApp:</strong> <a href="https://wa.me/34638769281" target="_blank" rel="noopener">+34 638 769 281</a></p>
+      </div>
+
+      <a href="index.html" class="legal-back">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/></svg>
+        Volver al inicio
+      </a>
+
+    </div>
+  </div>
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <img src="assets/logo-banner.jpg" alt="NCG">
+        <p>Reparación, rehabilitación y mantenimiento de tejados, cubiertas e impermeabilizaciones. Especialistas en cubiertas ligeras.</p>
+        <p class="foot-tag">Soluciones ligeras. <em>Resultados sólidos.</em></p>
+      </div>
+      <div class="foot-col">
+        <h4>Servicios</h4>
+        <a href="index.html#servicios">Tejados y cubiertas</a>
+        <a href="index.html#servicios">Impermeabilización</a>
+        <a href="index.html#servicios">Cubiertas ligeras</a>
+        <a href="index.html#servicios">Cubiertas de madera</a>
+        <a href="index.html#servicios">Velux y claraboyas</a>
+      </div>
+      <div class="foot-col">
+        <h4>Empresa</h4>
+        <a href="index.html#garantias">Garantías</a>
+        <a href="index.html#galeria">Trabajos</a>
+        <a href="index.html#sobre">Sobre NCG</a>
+        <a href="index.html#contacto">Presupuesto</a>
+        <a href="privacidad.html">Política de privacidad</a>
+      </div>
+      <div class="foot-col">
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="tel:+34638769281">+34 638 769 281</a></li>
+          <li><a href="mailto:Ncgtrans@gmail.com">Ncgtrans@gmail.com</a></li>
+          <li><a href="https://wa.me/34638769281" target="_blank">WhatsApp directo</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© <span id="yr">2026</span> NCG · Cubierta Estructura Ligera. Todos los derechos reservados.</span>
+      <span class="foot-credit">Desarrollado por <a href="https://wa.me/34638769281" target="_blank" rel="noopener"><b>Neura</b></a></span>
+      <span><a href="privacidad.html">Política de privacidad</a></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+<script src="assets/main.js"></script>
+</body>
+</html>
