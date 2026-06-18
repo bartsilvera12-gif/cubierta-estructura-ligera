@@ -89,6 +89,9 @@
     const html = `
       <div class="dialog is-open" id="galDlg">
         <div class="dialog-card" style="width:min(560px,100%)">
+          <button type="button" class="dlg-close" data-cancel aria-label="Cerrar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6L6 18M6 6l12 12"/></svg>
+          </button>
           <h3>${it ? 'Editar imagen' : 'Subir imagen'}</h3>
           <p>Datos de la imagen para la galería.</p>
           <form id="galForm">
@@ -136,7 +139,7 @@
     const tmp = document.createElement('div'); tmp.innerHTML = html;
     const dlg = tmp.firstElementChild; document.body.appendChild(dlg);
     const close = () => dlg.remove();
-    dlg.querySelector('[data-cancel]').addEventListener('click', close);
+    dlg.querySelectorAll('[data-cancel]').forEach(b => b.addEventListener('click', close));
     dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
 
     window.ncgWireImageField(dlg, 'archivo');
