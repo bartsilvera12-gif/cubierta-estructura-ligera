@@ -406,40 +406,35 @@ small,.muted{color:var(--text-mute);font-size:.84rem}
 .field.has-error input,.field.has-error select,.field.has-error textarea{border-color:var(--danger)}
 .field.has-error .err{display:block}
 
-/* File input estilizado para combinar con el resto */
-.field input[type="file"]{
-  padding:10px 12px;
-  font:500 .9rem/1.4 "Barlow",sans-serif;
-  color:var(--text-soft);
-  cursor:pointer;
-  background:var(--bg-3);
-  border-style:dashed;
+/* Drop-zone para subir imágenes */
+.upload-zone{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  min-height:170px;width:100%;
+  border:2px dashed var(--line-strong);border-radius:12px;
+  background:var(--bg-3);overflow:hidden;cursor:pointer;
+  transition:border-color .2s,background .2s,transform .2s;
 }
-.field input[type="file"]:hover{background:#eaf1fb;border-color:var(--blue-bright)}
-.field input[type="file"]::file-selector-button{
-  margin-right:12px;
-  padding:8px 16px;
-  border-radius:8px;
-  border:0;
-  background:var(--blue);
-  color:#fff;
-  font:700 .78rem/1 "Archivo",sans-serif;
-  letter-spacing:.04em;
-  cursor:pointer;
-  transition:background .2s;
+.upload-zone:hover{border-color:var(--blue-bright);background:#eaf1fb}
+.upload-zone.is-drag{border-color:var(--blue);background:#dfe8f6;transform:scale(1.01)}
+.upload-empty{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  padding:22px;text-align:center;color:var(--text-soft);
 }
-.field input[type="file"]::file-selector-button:hover{background:var(--blue-bright)}
-.field input[type="file"]::-webkit-file-upload-button{
-  margin-right:12px;
-  padding:8px 16px;
-  border-radius:8px;
-  border:0;
-  background:var(--blue);
-  color:#fff;
-  font:700 .78rem/1 "Archivo",sans-serif;
-  letter-spacing:.04em;
-  cursor:pointer;
+.upload-empty svg{width:34px;height:34px;color:var(--blue);margin-bottom:4px}
+.upload-empty b{font:700 .92rem/1.2 "Archivo",sans-serif;color:var(--text);letter-spacing:.02em}
+.upload-empty span{font-size:.82rem;color:var(--text-mute)}
+.upload-preview{display:none;width:100%;max-height:260px;object-fit:cover}
+.upload-zone.has-file{padding:0;border-style:solid;background:#fff}
+.upload-zone.has-file .upload-empty{display:none}
+.upload-zone.has-file .upload-preview{display:block}
+.upload-change{
+  position:absolute;top:10px;right:10px;
+  background:rgba(16,24,40,.78);color:#fff;
+  padding:6px 12px;border-radius:8px;
+  font:700 .72rem/1 "Archivo",sans-serif;letter-spacing:.08em;text-transform:uppercase;
+  pointer-events:none;display:none;
 }
+.upload-zone.has-file .upload-change{display:block}
 
 .toggle{display:flex;align-items:center;gap:10px;cursor:pointer}
 .toggle input{appearance:none;width:42px;height:24px;border-radius:99px;background:var(--bg-3);border:1px solid var(--line);position:relative;cursor:pointer;transition:background .2s}

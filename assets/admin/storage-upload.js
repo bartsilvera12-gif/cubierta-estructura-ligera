@@ -35,44 +35,71 @@
     return window.ncgSb.storage.from(BUCKET).remove([path]);
   };
 
-  // HTML para un campo de imagen con preview.
+  // HTML para un campo de imagen tipo drop-zone con preview.
   // opts = { name, label, required, currentUrl, hint }
   window.ncgImageFieldHtml = function(opts){
     const escape = s => String(s==null?'':s).replace(/"/g,'&quot;');
     const isNew = !opts.currentUrl;
     const req = opts.required && isNew ? 'required' : '';
     const star = opts.required && isNew ? ' <span class="req">*</span>' : '';
+    const hasFile = !!opts.currentUrl;
     const previewSrc = opts.currentUrl ? `src="${escape(opts.currentUrl)}"` : '';
-    const previewDisplay = opts.currentUrl ? 'block' : 'none';
     const hint = isNew
-      ? (opts.hint || `JPG, PNG o WEBP · máx. ${MAX_MB} MB.`)
-      : 'Dejá el archivo vacío para mantener la imagen actual.';
+      ? (opts.hint || `JPG, PNG o WEBP · máx. ${MAX_MB} MB`)
+      : 'Hacé click para reemplazar (o dejá la actual)';
     return `
       <label>${opts.label}${star}</label>
-      <input name="${opts.name}" type="file" accept="image/*" ${req} data-img-field>
-      <div style="margin-top:10px">
-        <img data-img-preview="${opts.name}" ${previewSrc} alt=""
-             style="max-width:220px;border-radius:10px;border:1px solid var(--line);display:${previewDisplay}">
-      </div>
-      <small class="muted" style="display:block;margin-top:6px">${hint}</small>
+      <label class="upload-zone${hasFile?' has-file':''}" data-upload="${opts.name}">
+        <input name="${opts.name}" type="file" accept="image/*" ${req} hidden>
+        <div class="upload-empty">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+            <polyline points="17 8 12 3 7 8"/>
+            <line x1="12" y1="3" x2="12" y2="15"/>
+          </svg>
+          <b>Hacé click para elegir una imagen</b>
+          <span>${hint}</span>
+        </div>
+        <img class="upload-preview" data-img-preview="${opts.name}" ${previewSrc} alt="">
+        <span class="upload-change">Cambiar</span>
+      </label>
     `;
   };
 
   // Engancha el evento change → preview en vivo + validación de tamaño.
   window.ncgWireImageField = function(dlg, name){
     const input = dlg.querySelector(`input[name="${name}"]`);
+    const zone = dlg.querySelector(`label.upload-zone[data-upload="${name}"]`);
     const preview = dlg.querySelector(`img[data-img-preview="${name}"]`);
-    if (!input || !preview) return;
+    if (!input || !zone || !preview) return;
     input.addEventListener('change', () => {
       const file = input.files[0];
-      if (!file){ preview.removeAttribute('src'); preview.style.display = 'none'; return; }
+      if (!file){
+        zone.classList.remove('has-file');
+        preview.removeAttribute('src');
+        return;
+      }
       if (file.size > MAX_MB * 1024 * 1024) {
         window.ncgToast && window.ncgToast('La imagen pesa más de ' + MAX_MB + ' MB.', 'err');
         input.value = ''; return;
       }
       const reader = new FileReader();
-      reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; };
+      reader.onload = e => { preview.src = e.target.result; zone.classList.add('has-file'); };
       reader.readAsDataURL(file);
+    });
+    // Drag & drop
+    ['dragenter','dragover'].forEach(ev => zone.addEventListener(ev, e => {
+      e.preventDefault(); zone.classList.add('is-drag');
+    }));
+    ['dragleave','drop'].forEach(ev => zone.addEventListener(ev, e => {
+      e.preventDefault(); zone.classList.remove('is-drag');
+    }));
+    zone.addEventListener('drop', e => {
+      const file = e.dataTransfer.files && e.dataTransfer.files[0];
+      if (!file) return;
+      const dt = new DataTransfer(); dt.items.add(file);
+      input.files = dt.files;
+      input.dispatchEvent(new Event('change'));
     });
   };
 })();

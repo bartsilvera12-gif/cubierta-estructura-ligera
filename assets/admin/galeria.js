@@ -7,8 +7,6 @@
   const profile = await window.ncgProfile();
 
   const CATS = ['Tejados de madera','Cubiertas','Claraboyas','Impermeabilización','Paneles modernos','Canalones','Antes y después'];
-  const BUCKET = 'galeria-ncg';
-  const MAX_MB = 8;
 
   const root = document.querySelector('.main-inner');
   const emptyEl = root.querySelector('.empty');
@@ -96,12 +94,7 @@
           <form id="galForm">
             <div class="form-grid">
               <div class="field full">
-                <label>Imagen ${it ? '' : '<span class="req">*</span>'}</label>
-                <input name="archivo" type="file" accept="image/*" ${it ? '' : 'required'}>
-                <div id="filePreviewWrap" style="margin-top:10px">
-                  ${it?.imagen_url ? `<img id="filePreview" src="${escapeAttr(it.imagen_url)}" alt="" style="max-width:220px;border-radius:10px;border:1px solid var(--line);display:block">` : '<img id="filePreview" alt="" style="max-width:220px;border-radius:10px;border:1px solid var(--line);display:none">'}
-                </div>
-                ${it ? '<small class="muted" style="display:block;margin-top:6px">Dejá el archivo vacío para mantener la imagen actual.</small>' : '<small class="muted" style="display:block;margin-top:6px">JPG, PNG o WEBP · máx. '+MAX_MB+' MB.</small>'}
+                ${window.ncgImageFieldHtml({ name:'archivo', label:'Imagen', required:true, currentUrl: it?.imagen_url || '' })}
               </div>
               <div class="field full">
                 <label>Título</label>
@@ -146,19 +139,8 @@
     dlg.querySelector('[data-cancel]').addEventListener('click', close);
     dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
 
+    window.ncgWireImageField(dlg, 'archivo');
     const fileInput = dlg.querySelector('input[name="archivo"]');
-    const preview = dlg.querySelector('#filePreview');
-    fileInput.addEventListener('change', () => {
-      const file = fileInput.files[0];
-      if (!file) return;
-      if (file.size > MAX_MB * 1024 * 1024) {
-        window.ncgToast && window.ncgToast('La imagen pesa más de '+MAX_MB+' MB.', 'err');
-        fileInput.value = ''; return;
-      }
-      const reader = new FileReader();
-      reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; };
-      reader.readAsDataURL(file);
-    });
 
     dlg.querySelector('#galForm').addEventListener('submit', async (ev) => {
       ev.preventDefault();
@@ -178,23 +160,14 @@
       let storage_path = it?.storage_path || null;
 
       if (file) {
-        const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g,'') || 'jpg';
-        const rand = Math.random().toString(36).slice(2, 8);
-        const path = `${profile.store_id}/${Date.now()}-${rand}.${ext}`;
-        const up = await sb.storage.from(BUCKET).upload(path, file, {
-          cacheControl: '3600',
-          upsert: false,
-          contentType: file.type || undefined,
-        });
+        const up = await window.ncgUploadImage(file, profile.store_id);
         if (up.error) {
           submitBtn.disabled = false; submitBtn.textContent = originalLabel;
-          return window.ncgToast && window.ncgToast('Error subiendo imagen: ' + up.error.message, 'err');
+          return window.ncgToast && window.ncgToast('Error subiendo imagen: ' + up.error, 'err');
         }
-        const oldPath = storage_path;
-        storage_path = path;
-        const { data: pub } = sb.storage.from(BUCKET).getPublicUrl(path);
-        imagen_url = pub.publicUrl;
-        if (oldPath) sb.storage.from(BUCKET).remove([oldPath]);
+        if (storage_path) window.ncgDeleteImage(storage_path);
+        imagen_url = up.url;
+        storage_path = up.path;
       }
 
       const payload = {
@@ -232,7 +205,7 @@
     if (!ok) return;
     const { error } = await sb.from('ncg_galeria').delete().eq('id', id);
     if (error) return window.ncgToast && window.ncgToast('Error: ' + error.message, 'err');
-    if (it.storage_path) sb.storage.from(BUCKET).remove([it.storage_path]);
+    if (it.storage_path) window.ncgDeleteImage(it.storage_path);
     load();
   }
 
