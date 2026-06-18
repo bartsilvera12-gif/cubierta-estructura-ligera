@@ -140,16 +140,13 @@
                 <textarea name="descripcion">${escapeHtml(it?.descripcion||'')}</textarea>
               </div>
               <div class="field full">
-                <label>Imagen principal (URL)</label>
-                <input name="imagen_principal_url" type="text" value="${escapeAttr(it?.imagen_principal_url||'')}">
+                ${window.ncgImageFieldHtml({ name:'imagen_principal', label:'Imagen principal', currentUrl: it?.imagen_principal_url || '' })}
               </div>
-              <div class="field">
-                <label>Antes (URL)</label>
-                <input name="antes_url" type="text" value="${escapeAttr(it?.antes_url||'')}">
+              <div class="field full">
+                ${window.ncgImageFieldHtml({ name:'antes', label:'Antes', currentUrl: it?.antes_url || '' })}
               </div>
-              <div class="field">
-                <label>Después (URL)</label>
-                <input name="despues_url" type="text" value="${escapeAttr(it?.despues_url||'')}">
+              <div class="field full">
+                ${window.ncgImageFieldHtml({ name:'despues', label:'Después', currentUrl: it?.despues_url || '' })}
               </div>
               <div class="field">
                 <label class="toggle"><input type="checkbox" name="activo" ${it?.activo!==false?'checked':''}><span>Activo</span></label>
@@ -170,21 +167,51 @@
     const close = () => dlg.remove();
     dlg.querySelector('[data-cancel]').addEventListener('click', close);
     dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
+    window.ncgWireImageField(dlg, 'imagen_principal');
+    window.ncgWireImageField(dlg, 'antes');
+    window.ncgWireImageField(dlg, 'despues');
+
+    const FIELDS = [
+      { input: 'imagen_principal', urlCol: 'imagen_principal_url',          pathCol: 'imagen_principal_storage_path' },
+      { input: 'antes',            urlCol: 'antes_url',                     pathCol: 'antes_storage_path' },
+      { input: 'despues',          urlCol: 'despues_url',                   pathCol: 'despues_storage_path' },
+    ];
 
     dlg.querySelector('#trbForm').addEventListener('submit', async (ev) => {
       ev.preventDefault();
       const f = ev.target;
+      const submitBtn = f.querySelector('button[type="submit"]');
       const titulo = f.titulo.value.trim();
       let slug = f.slug.value.trim() || slugify(titulo);
+
+      submitBtn.disabled = true;
+      const originalLabel = submitBtn.textContent;
+
+      const imgs = {};
+      for (const cfg of FIELDS) {
+        imgs[cfg.urlCol]  = it?.[cfg.urlCol]  || null;
+        imgs[cfg.pathCol] = it?.[cfg.pathCol] || null;
+        const file = f[cfg.input].files[0];
+        if (!file) continue;
+        submitBtn.textContent = 'Subiendo…';
+        const up = await window.ncgUploadImage(file, profile.store_id);
+        if (up.error) {
+          submitBtn.disabled = false; submitBtn.textContent = originalLabel;
+          return window.ncgToast && window.ncgToast('Error subiendo '+cfg.input+': ' + up.error, 'err');
+        }
+        if (imgs[cfg.pathCol]) window.ncgDeleteImage(imgs[cfg.pathCol]);
+        imgs[cfg.urlCol]  = up.url;
+        imgs[cfg.pathCol] = up.path;
+      }
+
+      submitBtn.textContent = 'Guardando…';
       const payload = {
         titulo, slug,
         tipo_trabajo: f.tipo_trabajo.value || null,
         ubicacion:    f.ubicacion.value.trim() || null,
         fecha_trabajo: f.fecha_trabajo.value || null,
         descripcion:  f.descripcion.value.trim() || null,
-        imagen_principal_url: f.imagen_principal_url.value.trim() || null,
-        antes_url:    f.antes_url.value.trim() || null,
-        despues_url:  f.despues_url.value.trim() || null,
+        ...imgs,
         activo:       f.activo.checked,
         destacado:    f.destacado.checked,
         store_id:     profile.store_id,
@@ -192,7 +219,10 @@
       const res = it
         ? await sb.from('ncg_trabajos').update(payload).eq('id', it.id).select().single()
         : await sb.from('ncg_trabajos').insert(payload).select().single();
-      if (res.error) return window.ncgToast && window.ncgToast('Error: ' + res.error.message, 'err');
+      if (res.error) {
+        submitBtn.disabled = false; submitBtn.textContent = originalLabel;
+        return window.ncgToast && window.ncgToast('Error: ' + res.error.message, 'err');
+      }
       window.ncgToast && window.ncgToast(it?'Trabajo actualizado.':'Trabajo creado.', 'ok');
       close(); load();
     });
@@ -216,6 +246,8 @@
     if (!ok) return;
     const { error } = await sb.from('ncg_trabajos').delete().eq('id', id);
     if (error) return window.ncgToast && window.ncgToast('Error: ' + error.message, 'err');
+    [it.imagen_principal_storage_path, it.antes_storage_path, it.despues_storage_path]
+      .filter(Boolean).forEach(p => window.ncgDeleteImage(p));
     load();
   }
 

@@ -156,8 +156,7 @@
                 <textarea name="descripcion">${escapeHtml(it?.descripcion||'')}</textarea>
               </div>
               <div class="field full">
-                <label>Imagen URL</label>
-                <input name="imagen_url" type="text" value="${escapeAttr(it?.imagen_url||'')}">
+                ${window.ncgImageFieldHtml({ name:'imagen', label:'Imagen', currentUrl: it?.imagen_url || '' })}
               </div>
               <div class="field">
                 <label class="toggle"><input type="checkbox" name="activo" ${it?.activo!==false?'checked':''}><span>Activo</span></label>
@@ -180,17 +179,41 @@
 
     const close = () => dlg.remove();
     dlg.querySelectorAll('[data-cancel]').forEach(b => b.addEventListener('click', close));
+    window.ncgWireImageField(dlg, 'imagen');
 
     dlg.querySelector('#srvForm').addEventListener('submit', async (ev) => {
       ev.preventDefault();
       const f = ev.target;
+      const submitBtn = f.querySelector('button[type="submit"]');
       const titulo = f.titulo.value.trim();
       let slug = f.slug.value.trim() || slugify(titulo);
+
+      const file = f.imagen.files[0];
+      let imagen_url          = it?.imagen_url          || null;
+      let imagen_storage_path = it?.imagen_storage_path || null;
+
+      submitBtn.disabled = true;
+      const originalLabel = submitBtn.textContent;
+
+      if (file) {
+        submitBtn.textContent = 'Subiendo…';
+        const up = await window.ncgUploadImage(file, profile.store_id);
+        if (up.error) {
+          submitBtn.disabled = false; submitBtn.textContent = originalLabel;
+          return window.ncgToast && window.ncgToast('Error subiendo imagen: ' + up.error, 'err');
+        }
+        if (imagen_storage_path) window.ncgDeleteImage(imagen_storage_path);
+        imagen_url = up.url;
+        imagen_storage_path = up.path;
+      }
+
+      submitBtn.textContent = 'Guardando…';
       const payload = {
         titulo,
         slug,
         descripcion: f.descripcion.value.trim() || null,
-        imagen_url:  f.imagen_url.value.trim() || null,
+        imagen_url,
+        imagen_storage_path,
         orden:       parseInt(f.orden.value, 10) || 0,
         activo:      f.activo.checked,
         destacado:   f.destacado.checked,
@@ -203,6 +226,7 @@
         res = await sb.from('ncg_servicios').insert(payload).select().single();
       }
       if (res.error){
+        submitBtn.disabled = false; submitBtn.textContent = originalLabel;
         window.ncgToast && window.ncgToast('Error guardando: ' + res.error.message, 'err');
         return;
       }
@@ -235,6 +259,7 @@
     if (!ok) return;
     const { error } = await sb.from('ncg_servicios').delete().eq('id', id);
     if (error) return window.ncgToast && window.ncgToast('Error: ' + error.message, 'err');
+    if (it.imagen_storage_path) window.ncgDeleteImage(it.imagen_storage_path);
     window.ncgToast && window.ncgToast('Servicio eliminado.', 'ok');
     load();
   }

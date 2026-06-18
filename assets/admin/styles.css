@@ -406,6 +406,41 @@ small,.muted{color:var(--text-mute);font-size:.84rem}
 .field.has-error input,.field.has-error select,.field.has-error textarea{border-color:var(--danger)}
 .field.has-error .err{display:block}
 
+/* File input estilizado para combinar con el resto */
+.field input[type="file"]{
+  padding:10px 12px;
+  font:500 .9rem/1.4 "Barlow",sans-serif;
+  color:var(--text-soft);
+  cursor:pointer;
+  background:var(--bg-3);
+  border-style:dashed;
+}
+.field input[type="file"]:hover{background:#eaf1fb;border-color:var(--blue-bright)}
+.field input[type="file"]::file-selector-button{
+  margin-right:12px;
+  padding:8px 16px;
+  border-radius:8px;
+  border:0;
+  background:var(--blue);
+  color:#fff;
+  font:700 .78rem/1 "Archivo",sans-serif;
+  letter-spacing:.04em;
+  cursor:pointer;
+  transition:background .2s;
+}
+.field input[type="file"]::file-selector-button:hover{background:var(--blue-bright)}
+.field input[type="file"]::-webkit-file-upload-button{
+  margin-right:12px;
+  padding:8px 16px;
+  border-radius:8px;
+  border:0;
+  background:var(--blue);
+  color:#fff;
+  font:700 .78rem/1 "Archivo",sans-serif;
+  letter-spacing:.04em;
+  cursor:pointer;
+}
+
 .toggle{display:flex;align-items:center;gap:10px;cursor:pointer}
 .toggle input{appearance:none;width:42px;height:24px;border-radius:99px;background:var(--bg-3);border:1px solid var(--line);position:relative;cursor:pointer;transition:background .2s}
 .toggle input::before{content:"";position:absolute;width:16px;height:16px;border-radius:50%;background:#fff;top:3px;left:3px;transition:transform .2s var(--ease)}
