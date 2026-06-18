@@ -7,6 +7,8 @@
   const profile = await window.ncgProfile();
 
   const CATS = ['Tejados de madera','Cubiertas','Claraboyas','Impermeabilización','Paneles modernos','Canalones','Antes y después'];
+  const BUCKET = 'galeria-ncg';
+  const MAX_MB = 8;
 
   const root = document.querySelector('.main-inner');
   const emptyEl = root.querySelector('.empty');
@@ -94,8 +96,12 @@
           <form id="galForm">
             <div class="form-grid">
               <div class="field full">
-                <label>Imagen (URL) <span class="req">*</span></label>
-                <input name="imagen_url" type="text" value="${escapeAttr(it?.imagen_url||'')}" required>
+                <label>Imagen ${it ? '' : '<span class="req">*</span>'}</label>
+                <input name="archivo" type="file" accept="image/*" ${it ? '' : 'required'}>
+                <div id="filePreviewWrap" style="margin-top:10px">
+                  ${it?.imagen_url ? `<img id="filePreview" src="${escapeAttr(it.imagen_url)}" alt="" style="max-width:220px;border-radius:10px;border:1px solid var(--line);display:block">` : '<img id="filePreview" alt="" style="max-width:220px;border-radius:10px;border:1px solid var(--line);display:none">'}
+                </div>
+                ${it ? '<small class="muted" style="display:block;margin-top:6px">Dejá el archivo vacío para mantener la imagen actual.</small>' : '<small class="muted" style="display:block;margin-top:6px">JPG, PNG o WEBP · máx. '+MAX_MB+' MB.</small>'}
               </div>
               <div class="field full">
                 <label>Título</label>
@@ -140,11 +146,60 @@
     dlg.querySelector('[data-cancel]').addEventListener('click', close);
     dlg.addEventListener('click', e => { if (e.target === dlg) close(); });
 
+    const fileInput = dlg.querySelector('input[name="archivo"]');
+    const preview = dlg.querySelector('#filePreview');
+    fileInput.addEventListener('change', () => {
+      const file = fileInput.files[0];
+      if (!file) return;
+      if (file.size > MAX_MB * 1024 * 1024) {
+        window.ncgToast && window.ncgToast('La imagen pesa más de '+MAX_MB+' MB.', 'err');
+        fileInput.value = ''; return;
+      }
+      const reader = new FileReader();
+      reader.onload = e => { preview.src = e.target.result; preview.style.display = 'block'; };
+      reader.readAsDataURL(file);
+    });
+
     dlg.querySelector('#galForm').addEventListener('submit', async (ev) => {
       ev.preventDefault();
       const f = ev.target;
+      const submitBtn = f.querySelector('button[type="submit"]');
+      const file = fileInput.files[0];
+
+      if (!it && !file) {
+        return window.ncgToast && window.ncgToast('Elegí una imagen.', 'err');
+      }
+
+      submitBtn.disabled = true;
+      const originalLabel = submitBtn.textContent;
+      submitBtn.textContent = file ? 'Subiendo…' : 'Guardando…';
+
+      let imagen_url = it?.imagen_url || null;
+      let storage_path = it?.storage_path || null;
+
+      if (file) {
+        const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g,'') || 'jpg';
+        const rand = Math.random().toString(36).slice(2, 8);
+        const path = `${profile.store_id}/${Date.now()}-${rand}.${ext}`;
+        const up = await sb.storage.from(BUCKET).upload(path, file, {
+          cacheControl: '3600',
+          upsert: false,
+          contentType: file.type || undefined,
+        });
+        if (up.error) {
+          submitBtn.disabled = false; submitBtn.textContent = originalLabel;
+          return window.ncgToast && window.ncgToast('Error subiendo imagen: ' + up.error.message, 'err');
+        }
+        const oldPath = storage_path;
+        storage_path = path;
+        const { data: pub } = sb.storage.from(BUCKET).getPublicUrl(path);
+        imagen_url = pub.publicUrl;
+        if (oldPath) sb.storage.from(BUCKET).remove([oldPath]);
+      }
+
       const payload = {
-        imagen_url:  f.imagen_url.value.trim(),
+        imagen_url,
+        storage_path,
         titulo:      f.titulo.value.trim() || null,
         descripcion: f.descripcion.value.trim() || null,
         categoria:   f.categoria.value || null,
@@ -156,7 +211,10 @@
       const res = it
         ? await sb.from('ncg_galeria').update(payload).eq('id', it.id).select().single()
         : await sb.from('ncg_galeria').insert(payload).select().single();
-      if (res.error) return window.ncgToast && window.ncgToast('Error: ' + res.error.message, 'err');
+      if (res.error) {
+        submitBtn.disabled = false; submitBtn.textContent = originalLabel;
+        return window.ncgToast && window.ncgToast('Error: ' + res.error.message, 'err');
+      }
       window.ncgToast && window.ncgToast(it?'Imagen actualizada.':'Imagen subida.', 'ok');
       close(); load();
     });
@@ -174,6 +232,7 @@
     if (!ok) return;
     const { error } = await sb.from('ncg_galeria').delete().eq('id', id);
     if (error) return window.ncgToast && window.ncgToast('Error: ' + error.message, 'err');
+    if (it.storage_path) sb.storage.from(BUCKET).remove([it.storage_path]);
     load();
   }
 
