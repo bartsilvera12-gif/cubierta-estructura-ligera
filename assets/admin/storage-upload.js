@@ -9,31 +9,48 @@
   window.NCG_BUCKET = BUCKET;
   window.NCG_MAX_MB = MAX_MB;
 
-  // Sube un archivo y devuelve { url, path } o { error }.
-  window.ncgUploadImage = async function(file, storeId){
-    if (!window.ncgSb) return { error: 'Supabase no inicializado.' };
+  // Comprime la imagen a ~1600px max y la devuelve como data URL.
+  // Se guarda directamente en `imagen_url` — sin Supabase Storage.
+  window.ncgUploadImage = async function(file /*, storeId */){
     if (!file) return { error: 'Sin archivo.' };
     if (file.size > MAX_MB * 1024 * 1024) return { error: 'La imagen pesa más de ' + MAX_MB + ' MB.' };
+    try {
+      const dataUrl = await compressToDataUrl(file, 1600, 0.82);
+      return { url: dataUrl, path: null };
+    } catch (e) {
+      return { error: e && e.message || 'No se pudo procesar la imagen.' };
+    }
+  };
 
-    const sb = window.ncgSb;
-    const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g,'') || 'jpg';
-    const rand = Math.random().toString(36).slice(2, 8);
-    const path = `${storeId}/${Date.now()}-${rand}.${ext}`;
-    const up = await sb.storage.from(BUCKET).upload(path, file, {
-      cacheControl: '3600',
-      upsert: false,
-      contentType: file.type || undefined,
+  // No-op: las imágenes viven dentro de la fila, no hay archivo que limpiar.
+  window.ncgDeleteImage = function(){};
+
+  async function compressToDataUrl(file, maxSide, quality){
+    const img = await loadImage(file);
+    const w0 = img.naturalWidth, h0 = img.naturalHeight;
+    const scale = Math.min(1, maxSide / Math.max(w0, h0));
+    const w = Math.round(w0 * scale), h = Math.round(h0 * scale);
+    const canvas = document.createElement('canvas');
+    canvas.width = w; canvas.height = h;
+    const ctx = canvas.getContext('2d');
+    ctx.drawImage(img, 0, 0, w, h);
+    const mime = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+    return canvas.toDataURL(mime, quality);
+  }
+
+  function loadImage(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const img = new Image();
+        img.onload = () => resolve(img);
+        img.onerror = () => reject(new Error('Imagen inválida.'));
+        img.src = reader.result;
+      };
+      reader.onerror = () => reject(new Error('No se pudo leer el archivo.'));
+      reader.readAsDataURL(file);
     });
-    if (up.error) return { error: up.error.message };
-    const { data: pub } = sb.storage.from(BUCKET).getPublicUrl(path);
-    return { url: pub.publicUrl, path };
-  };
-
-  // Borrado “fire-and-forget” del archivo del bucket.
-  window.ncgDeleteImage = function(path){
-    if (!path || !window.ncgSb) return;
-    return window.ncgSb.storage.from(BUCKET).remove([path]);
-  };
+  }
 
   // HTML para un campo de imagen tipo drop-zone con preview.
   // opts = { name, label, required, currentUrl, hint }
