@@ -1,0 +1,7 @@
+# Helpers locales
+_serve.ps1
+_gbp-fotos.ps1
+
+# Carpeta de fotos con nombres SEO para subir a Google Business Profile.
+# Son copias de las fotos de uploads/, no hace falta versionarlas.
+gbp-photos/
